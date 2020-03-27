@@ -673,3 +673,14 @@ body {
   opacity: 1;
   visibility: visible;
 }
+
+.error-view {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-view__title,
+p.error-view__msg {
+  display: flex;
+  justify-content:center;
+}
