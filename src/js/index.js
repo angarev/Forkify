@@ -2,6 +2,7 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import { errorView } from './views/errorView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
@@ -65,10 +66,15 @@ elements.searchResPages.addEventListener('click', e => {
 const controlRecipe = async () => {
 	//Get Id from URL
 	const id = window.location.hash.replace('#', '').trim();
-	console.log(id);
 
 	if (id) {
 		//Prepare UI for changes
+		recipeView.clearRecipe();
+		renderLoader(elements.recipe);
+
+		//Highlight selected recipe
+		if (state.search) searchView.highlightSelected(id);
+
 		//Create new recipe object
 		state.recipe = new Recipe(id);
 
@@ -82,9 +88,14 @@ const controlRecipe = async () => {
 			state.recipe.calcTime();
 
 			//Render recipe
-			console.log(state.recipe);
+			clearLoader();
+			recipeView.renderRecipe(state.recipe);
 		} catch (error) {
 			console.log(error);
+
+			searchView.clearResults();
+			errorView(error, elements.recipe);
+			clearLoader();
 		}
 	}
 };
